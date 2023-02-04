@@ -1,0 +1,11 @@
+import pandas as pd
+import yfinance as yf
+
+# Get the data for the S&P 500 stock market index
+data = yf.Ticker("^GSPC").history(period="max")
+
+# Remove the timezone information from the datetime index
+data.index = data.index.tz_localize(None)
+
+# Save the data into an Excel file
+data.to_excel("sp500.xlsx")
