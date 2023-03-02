@@ -12,7 +12,8 @@ import base64
 # Set page title and favicon
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
 
-
+# Set some custom CSS styles
+st.markdown("""
 <style>
 h1, h2, h3 {
     color: #000000;
