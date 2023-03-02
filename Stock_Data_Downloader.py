@@ -44,10 +44,12 @@ p {
 
 @media (max-width: 768px) {
     h1, h2, h3 {
+        color: #FFFFFF;
         font-size: 32px;
     }
 
     p {
+        color: #FFFFFF;
         font-size: 14px;
         line-height: 1.4;
     }
@@ -58,6 +60,7 @@ p {
     }
 }
 </style>
+
 
 """, unsafe_allow_html=True)
 
