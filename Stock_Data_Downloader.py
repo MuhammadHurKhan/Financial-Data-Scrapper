@@ -6,6 +6,8 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+import base64
+import plotly.graph_objs as go
 
 # Set page title and favicon
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
@@ -40,13 +42,23 @@ if st.button("Download Data as CSV", key="download"):
     filename = f"{ticker}_{start_date}_{end_date}.csv"
     data.to_csv(filename)
     st.success(f"Data downloaded to {filename}.")
+    
+    # Create a download link for the CSV file
+    with open(filename, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV</a>'
+        st.markdown(href, unsafe_allow_html=True)
 
 # Display the data in a table
 if st.button("Show Data", key="show"):
     data = yf.download(ticker, start=start_date, end=end_date)
     st.write(data)
-
-# Add your information to the app
+    
+    # Display the closing price graph
+    fig = data["Close"].plot(figsize=(10, 7))
+    st.pyplot(fig)
+  # Add your information to the app
 st.markdown("""
 ## About Me
 My name is Muhammad Hur Khan, and I'm on a mission to help businesses achieve their goals through data analysis and financial modeling. With a keen eye for business process analysis and optimization, I'm dedicated to finding ways to drive your business growth and take you to the next level.
@@ -58,8 +70,3 @@ With a degree in Computational Finance from NED University of Engineering and Te
 If you're looking for a data analyst who can help you optimize your business, then let's connect! I'm eager to hear about your business and your goals, and I'm ready to bring my expertise to help you succeed.
 """)
 
-# Add closing price graph
-if st.button("Show Closing Price Graph", key="graph"):
-    data = yf.download(ticker, start=start_date, end=end_date)
-    fig = data.Close.plot()
-    st.write(fig)
