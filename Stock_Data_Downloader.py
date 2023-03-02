@@ -7,6 +7,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+import smtplib
 
 # Set page layout and background color
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":chart_with_upwards_trend:",
@@ -44,12 +45,20 @@ if st.button("Show Closing Price Graph"):
     st.pyplot(fig)
 
 # Create a form for the user to contact me
-st.subheader("Contact Me")
 form = st.form(key="contact_form")
-form.email_input(label="Enter your email address")
-form.text_area(label="Enter your message")
-form.form_submit_button(label="Submit")
-
+email = form.email_input(label="Enter your email address")
+message = form.text_area(label="Enter your message")
+if form.form_submit_button(label="Submit"):
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login("your_email_address", "your_email_password")
+        server.sendmail("your_email_address", email, message)
+        server.quit()
+        st.success("Message sent!")
+    except Exception as e:
+        st.error("Unable to send message.")
+        st.exception(e)
 # Enable users to download data since the inception of each stock or index
 st.subheader("Download Data Since Inception")
 ticker_since = st.text_input("Enter a stock ticker symbol or index (e.g. AAPL or ^GSPC)")
