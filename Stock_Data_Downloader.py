@@ -8,56 +8,53 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 
-# Set page config
-st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:", layout="wide")
+# Set page layout and background color
+st.set_page_config(page_title="Stock Data Downloader", page_icon=":chart_with_upwards_trend:",
+                   layout="wide", page_bg_color="#0D1F30", )
 
-# Set background color
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #001F3F;
-        color: white;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Add welcome note
-st.title("Welcome to the Stock Data Downloader!")
-st.write("This app allows you to download historical stock data and create visualizations.")
+# Add welcome message
+st.title("Welcome to Stock Data Downloader!")
+st.write("This app allows you to download historical stock price data as a CSV file and view the data in a table and chart. "
+         "Please enter a stock ticker symbol and date range to get started.")
 
 # Create a form for the user to enter the stock ticker and date range
-with st.form("user_inputs"):
-    ticker = st.text_input("Enter the stock ticker (e.g., AAPL)")
-    start_date = st.date_input("Enter the start date")
-    end_date = st.date_input("Enter the end date")
-    email = st.text_input("Enter your email address")
-    submit_button = st.form_submit_button(label="Download Data")
+st.subheader("Enter the stock ticker and date range:")
+ticker = st.text_input("Ticker")
+start_date = st.date_input("Start date")
+end_date = st.date_input("End date")
 
-if submit_button:
-    # download the data and save it to a CSV file
+# Create a button to download the data
+if st.button("Download Data as CSV"):
+    # Download the data and save it to a CSV file
     data = yf.download(ticker, start=start_date, end=end_date)
     filename = f"{ticker}_{start_date}_{end_date}.csv"
     data.to_csv(filename)
     st.success(f"Data downloaded to {filename}.")
 
-    # send an email with the download link
-    body = f"Here is the download link for {filename}: {st.get_static_download_link(filename)}"
-    subject = f"Stock Data Download: {filename}"
-    st.write(f"Sending email to {email}...")
-    st.write(f"Subject: {subject}")
-    st.write(f"Body: {body}")
-
-# Display the data in a table and plot
-if ticker and start_date and end_date:
+# Create a button to show the data in a table
+if st.button("Show Data in Table"):
     data = yf.download(ticker, start=start_date, end=end_date)
-    st.subheader(f"{ticker} Historical Data ({start_date} to {end_date})")
     st.write(data)
 
-    # create a plot showing the closing price
-    chart_data = data.reset_index()
-    chart_data = chart_data[["Date", "Close"]]
-    chart_data = chart_data.set_index("Date")
-    st.line_chart(chart_data, use_container_width=True)
+# Create a button to show the closing price graph
+if st.button("Show Closing Price Graph"):
+    data = yf.download(ticker, start=start_date, end=end_date)
+    fig = pd.DataFrame(data['Close']).plot(title=f"{ticker} Closing Price Since {start_date}",
+                                           xlabel="Date", ylabel="Closing Price")
+    st.pyplot(fig)
+
+# Create a form for the user to contact me
+st.subheader("Contact Me")
+form = st.form(key="contact_form")
+form.email_input(label="Enter your email address")
+form.text_area(label="Enter your message")
+form.form_submit_button(label="Submit")
+
+# Enable users to download data since the inception of each stock or index
+st.subheader("Download Data Since Inception")
+ticker = st.text_input("Enter a stock ticker symbol or index (e.g. AAPL or ^GSPC)")
+if st.button(f"Download {ticker} Data Since Inception"):
+    data = yf.download(ticker, period="max")
+    filename = f"{ticker}_since_inception.csv"
+    data.to_csv(filename)
+    st.success(f"Data downloaded to {filename}.")
