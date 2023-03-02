@@ -21,12 +21,17 @@ end_date = st.date_input("Enter the end date for the desired time period:")
 start_date_str = start_date.strftime("%Y-%m-%d")
 end_date_str = end_date.strftime("%Y-%m-%d")
 
-# Retrieve the data for the specified stock or index and time period
-data = yf.download(ticker, start=start_date_str, end=end_date_str)
+try:
+    # Retrieve the data for the specified stock or index and time period
+    data = yf.download(ticker, start=start_date_str, end=end_date_str)
 
-# Remove the timezone information from the datetime index
-data.index = data.index.tz_localize(None)
+    # Remove the timezone information from the datetime index
+    data.index = data.index.tz_localize(None)
 
+    # Show the data to the user
+    st.write(data)
+except Exception as e:
+    st.error("An error occurred while retrieving the data. Please try again later.")
 # Display the data in a table
 st.write(data)
 
