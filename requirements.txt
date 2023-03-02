@@ -2,3 +2,4 @@ streamlit==1.19.0
 pandas==1.5.3
 yfinance==0.2.12
 pybase64==1.2.3
+plotly==5.13.1
