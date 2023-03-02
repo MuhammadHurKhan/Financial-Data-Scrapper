@@ -19,8 +19,8 @@ h1, h2, h3 {
     color: #FFFFFF;
 }
 .btn-primary {
-    background-color: #00001a ;
-    color: BLACK RUSSIAN;
+    background-color: #191970 ;
+    color: MidnightBlue;
     font-weight: bold;
 }
 </style>
