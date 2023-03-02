@@ -7,6 +7,7 @@
 import pandas as pd
 import yfinance as yf
 import streamlit as st
+import base64
 
 # Create a Streamlit application
 st.title("Stock Data Downloader")
