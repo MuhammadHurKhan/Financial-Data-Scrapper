@@ -43,10 +43,10 @@ if st.button("Download Data as CSV", key="download"):
     data.to_csv(filename)
     st.success(f"Data downloaded to {filename}.")
     with open(filename, "rb") as f:
-    data = f.read()
-    b64 = base64.b64encode(data).decode()
-    href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV</a>'
-    st.markdown(href, unsafe_allow_html=True)
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV</a>'
+        st.markdown(href, unsafe_allow_html=True)
 
 # Display the data in a table
 if st.button("Show Data", key="show"):
