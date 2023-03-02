@@ -54,8 +54,9 @@ if st.button("Show Data", key="show"):
     data = yf.download(ticker, start=start_date, end=end_date)
     st.write(data)
     
-    # Display the closing price graph
-    fig = data["Close"].plot(figsize=(10, 7))
-    st.pyplot(fig)
-
+   # Display a line chart of the closing price
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data.index, y=data['Close'], name="Closing Price"))
+    fig.update_layout(title=f"{ticker} Closing Price", xaxis_title="Date", yaxis_title="Price")
+    st.plotly_chart(fig)
 
