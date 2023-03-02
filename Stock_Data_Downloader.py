@@ -12,16 +12,29 @@ import base64
 # Set page title and favicon
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
 
+
 # Set some custom CSS styles
 st.markdown("""
-<style>
-h1, h2, h3 {
-    color: #FFFFFF;
-}
-.btn-primary {
-    background-color: #191970 ;
-    color: MidnightBlue;
-    font-weight: bold;
+    <style>
+        body {
+            background-color: #001f3f;
+            color: #FFFFFF;
+        }
+        
+        h1, h2, h3 {
+            color: #FFFFFF;
+        }
+
+        .btn-primary {
+            background-color: #191970;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+#
+
 }
 </style>
 """, unsafe_allow_html=True)
@@ -61,6 +74,8 @@ if st.button("Show Data", key="show"):
 
 # Add your information to the app
 st.markdown("""
+
+
 ## About Me
 My name is Muhammad Hur Khan, and I'm on a mission to help businesses achieve their goals through data analysis and financial modeling. With a keen eye for business process analysis and optimization, I'm dedicated to finding ways to drive your business growth and take you to the next level.
 
