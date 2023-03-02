@@ -4,46 +4,28 @@
 # In[1]:
 
 
-import pandas as pd
-import yfinance as yf
 import streamlit as st
-import base64
+import yfinance as yf
+import pandas as pd
 
-# Define function to download stock data
-@st.cache
-def download_data(ticker, start_date, end_date):
-    start_date_str = start_date.strftime("%Y-%m-%d")
-    end_date_str = end_date.strftime("%Y-%m-%d")
-    data = yf.download(ticker, start=start_date_str, end=end_date_str)
-    return data
+st.title("Stock Data Downloader")
 
-# Define main function for app
-def main():
-    # Set page title and icon
-    st.set_page_config(page_title='Stock Data Downloader', page_icon=':chart_with_upwards_trend:')
-    
-    # Define sidebar inputs
-    st.sidebar.title('Stock Data Downloader')
-    ticker = st.sidebar.text_input('Enter Ticker Symbol (e.g. AAPL)')
-    start_date = st.sidebar.date_input('Enter Start Date', value=pd.to_datetime('2010-01-01'))
-    end_date = st.sidebar.date_input('Enter End Date', value=pd.to_datetime('today'))
-    
-    # Define welcome message
-    st.write('Welcome to the Stock Data Downloader! Please wait while we retrieve your data...')
-    
-    # Download data and show table
-    try:
-        data = download_data(ticker, start_date, end_date)
-        st.write(data)
-    except Exception as e:
-        st.write('An error occurred while retrieving the data. Please try again later.')
-        st.write('Error Details:', e)
+# create a form for the user to enter the stock ticker and date range
+st.subheader("Enter the stock ticker and date range:")
+ticker = st.text_input("Ticker")
+start_date = st.date_input("Start date")
+end_date = st.date_input("End date")
 
-if __name__ == '__main__':
-    main()
-# Allow the user to download the data in a CSV file format
-csv = data.to_csv(index=False)
-b64 = base64.b64encode(csv.encode()).decode()
-href = f'<a href="data:file/csv;base64,{b64}" download="{ticker}.csv">Download CSV File</a>'
-st.markdown(href, unsafe_allow_html=True)
+# create a button to download the data
+if st.button("Download Data as CSV"):
+    # download the data and save it to a CSV file
+    data = yf.download(ticker, start=start_date, end=end_date)
+    filename = f"{ticker}_{start_date}_{end_date}.csv"
+    data.to_csv(filename)
+    st.success(f"Data downloaded to {filename}.")
+
+# display the data in a table
+if st.button("Show Data"):
+    data = yf.download(ticker, start=start_date, end=end_date)
+    st.write(data)
 
