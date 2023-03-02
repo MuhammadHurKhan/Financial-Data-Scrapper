@@ -7,6 +7,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+import plotly.graph_objs as go
 
 # Set page title and favicon
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
@@ -46,3 +47,10 @@ if st.button("Download Data as CSV", key="download"):
 if st.button("Show Data", key="show"):
     data = yf.download(ticker, start=start_date, end=end_date)
     st.write(data)
+
+    # Display a line chart of the closing price
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data.index, y=data['Close'], name="Closing Price"))
+    fig.update_layout(title=f"{ticker} Closing Price", xaxis_title="Date", yaxis_title="Price")
+    st.plotly_chart(fig)
+
