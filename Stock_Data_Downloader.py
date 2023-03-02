@@ -9,8 +9,13 @@ import yfinance as yf
 import pandas as pd
 
 # Set page layout and background color
-st.set_page_config(page_title="Stock Data Downloader", page_icon=":chart_with_upwards_trend:",
-                   layout="wide", page_bg_color="#0D1F30", )
+st.set_page_config(
+    page_title="Stock Data Downloader",
+    page_icon=":chart_with_upwards_trend:",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 
 # Add welcome message
 st.title("Welcome to Stock Data Downloader!")
