@@ -13,23 +13,51 @@ import base64
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
 
 
-st.markdown("""
-    <style>
-        body {
-            background-color: navy;
-            color: white;
-        }
-        
-        h1, h2, h3 {
-            color: white;
-        }
-        
-        .btn-primary {
-            background-color: navy;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+<style>
+h1, h2, h3 {
+    color: #000000;
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    color: #333333;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    h1, h2, h3 {
+        font-size: 32px;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .btn-primary {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+</style>
+
 """, unsafe_allow_html=True)
 
 
