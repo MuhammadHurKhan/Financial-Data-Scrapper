@@ -33,9 +33,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-}
-</style>
-""", unsafe_allow_html=True)
 
 # Render the page
 st.title("Stock Data Downloader")
