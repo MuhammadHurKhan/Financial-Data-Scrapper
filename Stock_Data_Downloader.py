@@ -16,11 +16,11 @@ st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wi
 st.markdown("""
 <style>
 h1, h2, h3 {
-    color: #000080;
+    color: #FFFFFF;
 }
 .btn-primary {
-    background-color: #000080;
-    color: white;
+    background-color: #00001a ;
+    color: BLACK RUSSIAN;
     font-weight: bold;
 }
 </style>
