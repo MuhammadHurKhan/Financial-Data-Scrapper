@@ -7,74 +7,57 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-import plotly.graph_objs as go
+
+# Set page config
+st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:", layout="wide")
 
 # Set background color
 st.markdown(
-    f"""
+    """
     <style>
-        .reportview-container {{
-            background: navy;
-        }}
-        .sidebar .sidebar-content {{
-            background: navy;
-        }}
+    body {
+        background-color: #001F3F;
+        color: white;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Title and welcome message
-st.title("Stock Data Downloader")
-st.write("Welcome to Stock Data Downloader! Enter a stock ticker symbol and date range below to get started.")
-
-# Contact form
-st.subheader("Contact Me")
-form = st.form(key='my_form')
-form.email_input(label="Enter your email address")
-form.text_area(label="Enter your message")
-form.form_submit_button(label="Submit")
+# Add welcome note
+st.title("Welcome to the Stock Data Downloader!")
+st.write("This app allows you to download historical stock data and create visualizations.")
 
 # Create a form for the user to enter the stock ticker and date range
-st.subheader("Enter the stock ticker and date range:")
-ticker = st.text_input("Ticker", "AAPL")
-start_date = st.date_input("Start date")
-end_date = st.date_input("End date")
+with st.form("user_inputs"):
+    ticker = st.text_input("Enter the stock ticker (e.g., AAPL)")
+    start_date = st.date_input("Enter the start date")
+    end_date = st.date_input("Enter the end date")
+    email = st.text_input("Enter your email address")
+    submit_button = st.form_submit_button(label="Download Data")
 
-# Add a checkbox to enable users to download data since the inception of each stock or index
-since_inception = st.checkbox("Download data since inception")
-
-# Create a button to download the data
-if st.button("Download Data as CSV"):
-    if since_inception:
-        # download the data since inception and save it to a CSV file
-        data = yf.Ticker(ticker).history(period="max")
-        filename = f"{ticker}_since_inception.csv"
-    else:
-        # download the data and save it to a CSV file
-        data = yf.download(ticker, start=start_date, end=end_date)
-        filename = f"{ticker}_{start_date}_{end_date}.csv"
-    data.to_csv(filename, index=False)
+if submit_button:
+    # download the data and save it to a CSV file
+    data = yf.download(ticker, start=start_date, end=end_date)
+    filename = f"{ticker}_{start_date}_{end_date}.csv"
+    data.to_csv(filename)
     st.success(f"Data downloaded to {filename}.")
 
-# Display the data in a table
-if st.button("Show Data"):
-    if since_inception:
-        # download the data since inception and show it in a table
-        data = yf.Ticker(ticker).history(period="max")
-    else:
-        # download the data and show it in a table
-        data = yf.download(ticker, start=start_date, end=end_date)
+    # send an email with the download link
+    body = f"Here is the download link for {filename}: {st.get_static_download_link(filename)}"
+    subject = f"Stock Data Download: {filename}"
+    st.write(f"Sending email to {email}...")
+    st.write(f"Subject: {subject}")
+    st.write(f"Body: {body}")
+
+# Display the data in a table and plot
+if ticker and start_date and end_date:
+    data = yf.download(ticker, start=start_date, end=end_date)
+    st.subheader(f"{ticker} Historical Data ({start_date} to {end_date})")
     st.write(data)
 
-# Show a graph of the closing price since the start date
-if start_date:
-    if since_inception:
-        # download the data since inception and show a graph of the closing price
-        data = yf.Ticker(ticker).history(period="max")
-    else:
-        # download the data and show a graph of the closing price
-        data = yf.download(ticker, start=start_date, end=end_date)
-    fig = go.Figure(data=go.Scatter(x=data.index, y=data["Close"]))
-    fig.update_layout(title=f"{ticker} Closing Price Since {start_date}", xaxis_title="Date", yaxis_title="Closing Price")
-    st.plotly_chart(fig)
+    # create a plot showing the closing price
+    chart_data = data.reset_index()
+    chart_data = chart_data[["Date", "Close"]]
+    chart_data = chart_data.set_index("Date")
+    st.line_chart(chart_data, use_container_width=True)
