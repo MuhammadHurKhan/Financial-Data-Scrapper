@@ -13,21 +13,20 @@ import base64
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
 
 
-# Set some custom CSS styles
 st.markdown("""
     <style>
         body {
-            background-color: MidnightBlue;
-            color: #191970;
+            background-color: navy;
+            color: white;
         }
         
         h1, h2, h3 {
-            color: #191970;
+            color: white;
         }
-
+        
         .btn-primary {
-            background-color:MidnightBlue ;
-            color:#FFFFFF ;
+            background-color: navy;
+            color: white;
             font-weight: bold;
         }
     </style>
