@@ -22,7 +22,7 @@ st.markdown("""
         }
         
         h1, h2, h3 {
-            color: #FFFFFF;
+            color: #191970;
         }
 
         .btn-primary {
