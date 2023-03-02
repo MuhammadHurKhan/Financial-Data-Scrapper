@@ -7,6 +7,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import base64
+import plotly.graph_objs as go
 
 # Set page title and favicon
 st.set_page_config(page_title="Stock Data Downloader", page_icon=":money_with_wings:")
